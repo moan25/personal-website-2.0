@@ -1,248 +1,142 @@
-/* A single 4.4s opening: register, align, title, reveal. No looping or assets. */
+/* Original MirrorSphere V3 PNG revealed by one finite SVG mask timeline. */
 .opening {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  background: transparent;
-  color: var(--ink);
-  isolation: isolate;
-  --opening-ease: cubic-bezier(0.76, 0, 0.24, 1);
-  --opening-margin: clamp(24px, 4vw, 64px);
+  position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh;
+  max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  overflow: hidden; background: transparent; isolation: isolate;
+  --opening-paper: #f5f8fc; --opening-ink: #103b7a;
+  --opening-accent: #1d63cf; --opening-muted: #526b8b; --opening-line: #cbd8e8;
+  --opening-ease: cubic-bezier(.76, 0, .24, 1);
+  --opening-margin: clamp(24px, 4vw, 64px); color: var(--opening-ink);
+}
+[data-theme="dark"] .opening {
+  --opening-paper: #0b1729; --opening-ink: #e5f0ff;
+  --opening-accent: #66bfff; --opening-muted: #a1b6d0; --opening-line: #345070;
 }
 .opening::backdrop { background: transparent; }
 .opening .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
 .opening-shutter {
-  position: absolute;
-  inset-block: 0;
-  width: calc(50% + 1px);
-  background: var(--bg);
-  z-index: -1;
+  position: absolute; inset-block: 0; width: calc(50% + 1px);
+  background: var(--opening-paper); z-index: -1;
   animation: opening-shutter var(--opening-duration) var(--opening-ease) both;
 }
 .opening-shutter-left { left: 0; --shutter-direction: -101%; }
 .opening-shutter-right { right: 0; --shutter-direction: 101%; }
-.opening-topline,
-.opening-bottomline {
-  position: absolute;
-  z-index: 3;
-  inset-inline: var(--opening-margin);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.opening-topline, .opening-bottomline {
+  position: absolute; z-index: 3; inset-inline: var(--opening-margin);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .opening-topline { top: max(18px, env(safe-area-inset-top)); }
 .opening-bottomline {
-  bottom: max(26px, env(safe-area-inset-bottom));
-  color: var(--muted);
-  font-size: .8125rem;
-  animation: opening-chrome var(--opening-duration) ease both;
+  bottom: max(26px, env(safe-area-inset-bottom)); color: var(--opening-muted);
+  font-size: .8125rem; animation: opening-chrome var(--opening-duration) ease both;
 }
 .opening-bottomline p { line-height: 1.5; }
-.opening-bottomline span { font-family: var(--sans); font-size: 1rem; color: var(--ink); }
-.opening-bottomline i { font-style: normal; padding-inline: 12px; color: var(--line); }
+.opening-bottomline span { font-family: var(--sans); font-size: 1rem; color: var(--opening-ink); }
+.opening-bottomline i { font-style: normal; padding-inline: 12px; color: var(--opening-line); }
 .opening-label {
-  font: 600 .8125rem var(--sans);
-  letter-spacing: .08em;
+  font: 600 .8125rem var(--sans); letter-spacing: .08em;
   animation: opening-chrome var(--opening-duration) ease both;
 }
-.opening-label > span { font-weight: 400; color: var(--muted); margin-left: 12px; }
+.opening-label > span { font-weight: 400; color: var(--opening-muted); margin-left: 12px; }
 .opening-skip {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 0 10px 12px;
-  font-size: .875rem;
-  background: var(--bg);
+  display: flex; align-items: center; gap: 14px; padding: 10px 0 10px 12px;
+  font-size: .875rem; background: var(--opening-paper);
 }
 .opening-skip > span { font: 1.5rem var(--sans); transition: transform .2s; }
+.opening-skip:hover { color: var(--opening-accent); }
 .opening-skip:hover > span { transform: translate(2px, -2px); }
-.opening-skip:focus-visible { outline-width: 1px; outline-offset: 3px; }
-.opening-skip kbd { font: .75rem var(--sans); color: var(--muted); border: 1px solid var(--line); padding: 4px; }
-.opening-composition { position: absolute; inset: 100px var(--opening-margin) 90px; }
-.opening-coordinate {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font: .75rem var(--sans);
-  letter-spacing: .15em;
-  white-space: nowrap;
-  color: var(--muted);
-  animation: opening-registration var(--opening-duration) ease both;
+.opening-skip:focus-visible { outline: 1px solid var(--opening-accent); outline-offset: 3px; }
+.opening-skip kbd { font: .75rem var(--sans); color: var(--opening-muted); border: 1px solid var(--opening-line); padding: 4px; }
+.opening-composition {
+  position: absolute; inset: 88px var(--opening-margin) 88px;
+  display: grid; place-items: center;
 }
-.opening-coordinate-top { top: 0; }
-.opening-coordinate-bottom { bottom: 0; }
-.opening-axis { position: absolute; background: var(--line); opacity: .45; }
-.opening-axis-x {
-  top: 50%; left: 0; width: 100%; height: 1px;
-  animation: opening-axis-x var(--opening-duration) var(--opening-ease) both;
+.mirror-signature {
+  display: flex; flex-direction: column; align-items: center; max-width: 100%;
+  animation: mirror-exit var(--opening-duration) ease both;
 }
-.opening-axis-y {
-  left: 50%; top: 0; height: 100%; width: 1px;
-  animation: opening-axis-y var(--opening-duration) var(--opening-ease) both;
+.mirror-mark { width: min(540px, 60vw, 68vh); aspect-ratio: 940 / 650; flex: 0 0 auto; }
+.mirror-art { display: block; width: 100%; height: 100%; overflow: visible; }
+[data-theme="dark"] .mirror-art image { filter: brightness(1.8) saturate(.78); }
+.mirror-trace {
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  animation-duration: var(--opening-duration);
+  animation-timing-function: cubic-bezier(.4, 0, .25, 1); animation-fill-mode: both;
 }
-.opening-lock {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: clamp(230px, 26vw, 330px);
-  transform: translate(-50%, -50%);
-  animation: opening-lock var(--opening-duration) var(--opening-ease) both;
+.mirror-trace-axis { animation-name: mirror-axis; }
+.mirror-trace-core { animation-name: mirror-core; }
+.mirror-trace-shell { animation-name: mirror-shell; }
+.mirror-trace-back { animation-name: mirror-back; }
+.mirror-trace-front { animation-name: mirror-front; }
+.mirror-complete { animation: mirror-complete var(--opening-duration) ease both; }
+.mirror-wordmark {
+  text-align: center; margin-top: clamp(22px, 3vh, 34px);
+  animation: mirror-wordmark var(--opening-duration) ease both;
 }
-.opening-reticle { display: block; width: 100%; stroke: var(--line); stroke-width: 1; overflow: visible; }
-.opening-orbit { transform-origin: 160px 160px; animation: opening-orbit var(--opening-duration) var(--opening-ease) both; }
-.opening-inner { transform-origin: 160px 160px; animation: opening-inner var(--opening-duration) var(--opening-ease) both; }
-.opening-ticks { stroke: var(--accent); }
-.opening-mark { stroke: var(--ink); stroke-width: 6; transform: translate(-14px, -14px); }
-.opening-mark path { stroke-dasharray: 150; stroke-dashoffset: 150; animation: opening-mark var(--opening-duration) var(--opening-ease) both; }
-.opening-mark path:nth-child(2) { animation-delay: 70ms; }
-.opening-mark path:nth-child(3) { animation-delay: 140ms; stroke: var(--accent); }
-.opening-lock-caption { display: block; text-align: center; font-size: .75rem; letter-spacing: .2em; margin-top: 14px; }
-.opening-title {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: min(600px, 64vw);
-  transform: translate(-50%, -50%);
-  animation: opening-title-exit var(--opening-duration) var(--opening-ease) both;
+.mirror-name {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.3; letter-spacing: .18em; padding-left: .18em;
 }
-.opening-title-line {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  overflow: hidden;
-  font-family: "Bahnschrift", "Arial Narrow", Arial, sans-serif;
-  font-weight: 600;
-  font-stretch: semi-condensed;
-  font-size: clamp(5rem, 13vw, 10rem);
-  line-height: 1.02;
-  letter-spacing: -.025em;
+.mirror-english {
+  font: 500 clamp(1rem, 1.5vw, 1.25rem) "Bahnschrift", Arial, sans-serif;
+  letter-spacing: .18em; margin-top: 8px;
 }
-.opening-title-line > span { display: block; animation: opening-word var(--opening-duration) var(--opening-ease) both; }
-.opening-title-line-second { margin-left: 15%; }
-.opening-title-line-second > span { animation-name: opening-word-second; }
-.opening-title-line .opening-title-mark {
-  color: var(--accent);
-  font-family: Arial, sans-serif;
-  font-size: .55em;
-  font-weight: 400;
-  padding-right: .15em;
-  letter-spacing: 0;
-  animation-name: opening-arrow;
+.mirror-caption { margin-top: 20px; font-size: .875rem; letter-spacing: .08em; color: var(--opening-muted); }
+.mirror-fallback { height: 100%; display: grid; place-content: center; font: 2rem var(--sans); }
+/* Paired paths start together to preserve the brand's mirror symmetry. */
+@keyframes mirror-axis {
+  0%, 3% { stroke-dashoffset: 100; }
+  18%, 100% { stroke-dashoffset: 0; }
 }
-.opening-title-caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border-top: 1px solid var(--ink);
-  padding-top: 22px;
-  margin-top: 22px;
-  animation: opening-caption var(--opening-duration) ease both;
+@keyframes mirror-core {
+  0%, 12% { stroke-dashoffset: 100; }
+  33%, 100% { stroke-dashoffset: 0; }
 }
-.opening-title-caption > span:first-child { font-size: 1.125rem; letter-spacing: .1em; }
-.opening-title-caption > span:last-child { font: .75rem var(--sans); letter-spacing: .12em; color: var(--muted); }
-.opening-scan {
-  position: absolute;
-  top: 0; bottom: 0; left: 50%; width: 1px;
-  background: var(--accent);
-  animation: opening-scan var(--opening-duration) var(--opening-ease) both;
+@keyframes mirror-shell {
+  0%, 21% { stroke-dashoffset: 100; }
+  48%, 100% { stroke-dashoffset: 0; }
+}
+@keyframes mirror-back {
+  0%, 36% { stroke-dashoffset: 100; }
+  46%, 100% { stroke-dashoffset: 0; }
+}
+@keyframes mirror-front {
+  0%, 38% { stroke-dashoffset: 100; }
+  64%, 100% { stroke-dashoffset: 0; }
+}
+/* Finishing pass exposes original antialiased edges, not a substitute drawing. */
+@keyframes mirror-complete {
+  0%, 64% { opacity: 0; }
+  69%, 100% { opacity: 1; }
+}
+@keyframes mirror-wordmark {
+  0%, 49% { opacity: 0; transform: translateY(8px); }
+  66%, 100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes mirror-exit {
+  0%, 82% { opacity: 1; transform: translateY(0); }
+  91%, 100% { opacity: 0; transform: translateY(-8px); }
 }
 @keyframes opening-shutter {
-  0%, 77% { transform: translateX(0); }
+  0%, 84% { transform: translateX(0); }
   100% { transform: translateX(var(--shutter-direction)); }
 }
 @keyframes opening-chrome {
-  0%, 3% { opacity: 0; }
-  12%, 77% { opacity: 1; }
-  86%, 100% { opacity: 0; }
-}
-@keyframes opening-registration {
-  0%, 3% { opacity: 0; }
-  13%, 29% { opacity: 1; }
-  38%, 100% { opacity: 0; }
-}
-@keyframes opening-axis-x {
-  0% { transform: scaleX(0); }
-  16%, 28% { transform: scaleX(1); opacity: .45; }
-  42%, 100% { transform: scaleX(.6); opacity: 0; }
-}
-@keyframes opening-axis-y {
-  0%, 7% { transform: scaleY(0); }
-  21%, 28% { transform: scaleY(1); opacity: .45; }
-  42%, 100% { transform: scaleY(.6); opacity: 0; }
-}
-@keyframes opening-lock {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(.8); }
-  12%, 28% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  39%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.84); }
-}
-@keyframes opening-orbit {
-  0% { transform: rotate(-100deg); }
-  30%, 100% { transform: rotate(0); }
-}
-@keyframes opening-inner {
-  0% { transform: rotate(140deg); }
-  30%, 100% { transform: rotate(0); }
-}
-@keyframes opening-mark {
-  0%, 5% { stroke-dashoffset: 150; }
-  23%, 100% { stroke-dashoffset: 0; }
-}
-@keyframes opening-word {
-  0%, 32% { transform: translateY(110%); }
-  50%, 100% { transform: translateY(0); }
-}
-@keyframes opening-word-second {
-  0%, 37% { transform: translateY(110%); }
-  55%, 100% { transform: translateY(0); }
-}
-@keyframes opening-arrow {
-  0%, 39% { opacity: 0; transform: translate(-20px, 20px); }
-  56%, 100% { opacity: 1; transform: translate(0, 0); }
-}
-@keyframes opening-caption {
-  0%, 45% { opacity: 0; transform: translateY(10px); }
-  57%, 100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes opening-title-exit {
-  0%, 73% { opacity: 1; transform: translate(-50%, -50%); }
-  84%, 100% { opacity: 0; transform: translate(-50%, -54%); }
-}
-@keyframes opening-scan {
-  0%, 29% { opacity: 0; transform: scaleY(0); }
-  34% { opacity: .8; transform: scaleY(1); }
-  40% { opacity: 0; transform: scaleY(1); }
-  76% { opacity: 0; transform: scaleY(.1); }
-  79% { opacity: .8; transform: scaleY(1); }
-  87%, 100% { opacity: 0; transform: scaleY(1); }
+  0%, 2% { opacity: 0; }
+  10%, 82% { opacity: 1; }
+  91%, 100% { opacity: 0; }
 }
 .opening[data-still="true"] *,
 .opening[data-still="true"] *::before,
 .opening[data-still="true"] *::after { animation: none !important; }
-.opening[data-still="true"] :is(.opening-lock, .opening-axis, .opening-scan, .opening-coordinate) { display: none; }
+.opening[data-still="true"] .mirror-trace { stroke-dashoffset: 0; }
+.opening[data-still="true"] .mirror-complete { opacity: 1; }
 @media (max-width: 600px) {
   .opening-label > span { display: none; }
-  .opening-title { width: min(420px, 82vw); }
-  .opening-title-line { font-size: clamp(4rem, 19vw, 7rem); }
-  .opening-title-caption { flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 20px; }
-  .opening-title-caption > span:first-child { font-size: 1rem; }
-  .opening-composition { inset-block: 115px 110px; }
+  .mirror-mark { width: min(82vw, 420px, 63vh); }
   .opening-bottomline { gap: 8px; align-items: flex-end; }
   .opening-bottomline > p:first-child { max-width: 7em; }
   .opening-bottomline i { padding-inline: 6px; }
@@ -250,9 +144,11 @@
   .opening-skip kbd { display: none; }
 }
 @media (max-height: 580px) and (min-width: 601px) {
-  .opening-composition { inset-block: 74px; }
-  .opening-lock { width: 190px; }
-  .opening-title { width: 420px; }
-  .opening-title-line { font-size: min(15vh, 6rem); }
-  .opening-title-caption { padding-top: 12px; margin-top: 12px; }
+  .opening-composition { inset-block: 70px; }
+  .mirror-signature { flex-direction: row; gap: 42px; }
+  .mirror-mark { width: min(40vw, 280px, 72vh); }
+  .mirror-wordmark { margin-top: 0; text-align: left; }
+  .mirror-name { font-size: 2rem; padding-left: 0; }
+  .mirror-english { font-size: 1rem; }
+  .mirror-caption { margin-top: 16px; }
 }
