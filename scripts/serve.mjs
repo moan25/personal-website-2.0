@@ -36,7 +36,7 @@ const server = http.createServer(async (request, response) => {
     const url = new URL(request.url, `http://127.0.0.1:${port}`);
     if (url.pathname === "/__portfolio/health") {
       response.writeHead(200, {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         "Cache-Control": "no-store",
       });
       response.end(
