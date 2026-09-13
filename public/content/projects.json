@@ -1,0 +1,573 @@
+[
+  {
+    "slug": "digital-twin",
+    "title": "工业机器人数字孪生",
+    "subtitle": "基于 Unity 3D 的工业机器人数字孪生系统",
+    "englishTitle": "INDUSTRIAL DIGITAL TWIN",
+    "category": "数字孪生",
+    "summary": "在 Unity 中构建机器人工作场景，连接 ROS 运动规划与 Agent 任务编排，探索可观测的装箱执行闭环。",
+    "status": "仿真系统",
+    "cover": "media/twin/sequence-poster-1920.webp",
+    "coverAlt": "Unity 场景中的青色工业机械臂与蓝色分格箱",
+    "coverPosition": "center 48%",
+    "tags": ["数字孪生", "机器人", "任务编排"],
+    "stack": ["Unity 3D", "C#", "ROS Noetic", "MoveIt", "Python", "WebSocket"],
+    "background": "将高层任务、运动规划与物理执行分开验证。在可观测的三维场景中，完成工件抓取、指定放置、连续装箱与满箱停止等任务。",
+    "features": [
+      {
+        "title": "三维场景与物理执行",
+        "text": "Unity 管理机械臂、夹爪、工件和分格箱，并根据接触与落点稳定性判定执行结果。"
+      },
+      {
+        "title": "连续五阶段运动",
+        "text": "由预抓取、抓取、抬升、预放置和放置组成任务链路，对接 ROS 与 MoveIt 的轨迹规划。"
+      },
+      {
+        "title": "灵活的装箱任务",
+        "text": "演示包含顺序装箱、密集区域装箱、指定落点装箱，以及装满后停止。"
+      },
+      {
+        "title": "可追溯的关键帧",
+        "text": "使用采集编号关联图像和场景状态，为 Agent 的继续、重规划与中止决策提供观测。"
+      }
+    ],
+    "highlights": [
+      "将规划成功与实际执行成功分开判定。",
+      "以场景状态和动态格位占用支撑任务执行与结果验证。"
+    ],
+    "scope": "页面展示虚拟仿真与已有录屏。2026-09-02 技术报告注明，未连接实体机械臂，尚未完成目标 ROS 环境中的三端实网往返验证；不包含实体硬件性能结论。",
+    "media": [
+      {
+        "id": "twin-sequence",
+        "type": "video",
+        "src": "media/twin/sequence.mp4",
+        "poster": "media/twin/sequence-poster-1920.webp",
+        "title": "从左到右，完成装箱",
+        "caption": "Unity 录屏：按顺序抓取工件并放入分格箱。",
+        "duration": 124.53,
+        "aspectRatio": "16 / 9",
+        "posterVariants": [
+          {
+            "src": "media/twin/sequence-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/sequence-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/sequence-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "resolution": "1920 × 1080"
+      },
+      {
+        "id": "twin-dense",
+        "type": "video",
+        "src": "media/twin/dense.mp4",
+        "poster": "media/twin/dense-poster-1920.webp",
+        "title": "密集区域装箱",
+        "caption": "Unity 录屏：在密集工件场景中执行装箱任务。",
+        "duration": 77.72,
+        "aspectRatio": "16 / 9",
+        "posterVariants": [
+          {
+            "src": "media/twin/dense-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/dense-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/dense-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "resolution": "1920 × 1080"
+      },
+      {
+        "id": "twin-target",
+        "type": "video",
+        "src": "media/twin/target.mp4",
+        "poster": "media/twin/target-poster-1920.webp",
+        "title": "指定落点装箱",
+        "caption": "Unity 录屏：将工件放置到指定位置。",
+        "duration": 59.35,
+        "aspectRatio": "16 / 9",
+        "posterVariants": [
+          {
+            "src": "media/twin/target-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/target-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/target-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "resolution": "1920 × 1080"
+      },
+      {
+        "id": "twin-full",
+        "type": "video",
+        "src": "media/twin/full.mp4",
+        "poster": "media/twin/full-poster-1920.webp",
+        "title": "装满，任务停止",
+        "caption": "Unity 录屏：展示满箱后的任务停止行为。",
+        "duration": 55.53,
+        "aspectRatio": "16 / 9",
+        "posterVariants": [
+          {
+            "src": "media/twin/full-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/full-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/full-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "resolution": "1920 × 1080"
+      },
+      {
+        "id": "twin-robot",
+        "type": "image",
+        "src": "media/twin/sequence-poster-1920.webp",
+        "title": "机械臂与分格箱",
+        "caption": "从项目原始 1920 × 1080 录屏提取的真实画面。",
+        "alt": "青色机械臂在蓝色分格箱旁执行任务",
+        "full": "media/twin/sequence-poster-full.webp",
+        "variants": [
+          {
+            "src": "media/twin/sequence-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/sequence-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/sequence-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "sourceType": "视频帧"
+      },
+      {
+        "id": "twin-scene",
+        "type": "image",
+        "src": "media/twin/dense-poster-1920.webp",
+        "title": "抓取场景细节",
+        "caption": "从项目原始 1920 × 1080 录屏提取的真实画面。",
+        "alt": "Unity 场景中机械臂末端和工件近景",
+        "full": "media/twin/dense-poster-full.webp",
+        "variants": [
+          {
+            "src": "media/twin/dense-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/dense-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/dense-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "sourceType": "视频帧"
+      },
+      {
+        "id": "twin-environment",
+        "type": "image",
+        "src": "media/twin/target-poster-1920.webp",
+        "title": "三维仿真工作台",
+        "caption": "从项目原始 1920 × 1080 录屏提取的真实画面。",
+        "alt": "机械臂抓取工件的三维工作台场景",
+        "fit": "contain",
+        "full": "media/twin/target-poster-full.webp",
+        "variants": [
+          {
+            "src": "media/twin/target-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/target-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/twin/target-poster-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "sourceType": "视频帧"
+      },
+      {
+        "id": "twin-architecture",
+        "type": "image",
+        "src": "media/twin/architecture-831.webp",
+        "title": "Unity、ROS 与 Agent",
+        "caption": "项目已有的协同交互架构图。",
+        "alt": "Unity、ROS 和 Agent 三端的分层架构与交互关系图",
+        "fit": "contain",
+        "full": "media/twin/architecture-full.webp",
+        "variants": [
+          {
+            "src": "media/twin/architecture-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/twin/architecture-831.webp",
+            "width": 831
+          }
+        ],
+        "width": 831,
+        "height": 526
+      }
+    ],
+    "code": "DT",
+    "process": [
+      {
+        "title": "Agent 编排",
+        "text": "形成任务目标、请求场景快照，限定继续、重规划、安全回撤与中止等决策。"
+      },
+      {
+        "title": "ROS / MoveIt 规划",
+        "text": "对目标位姿生成预抓取、抓取、抬升、预放置和放置五阶段轨迹。"
+      },
+      {
+        "title": "Unity 执行与判定",
+        "text": "运行虚拟物理场景，根据接触、格位占用与落点稳定性判断执行结果。"
+      },
+      {
+        "title": "关键帧回传",
+        "text": "用同一采集编号关联图像和状态，避免不同任务或阶段的观测错配。"
+      }
+    ],
+    "evidence": [
+      "四段视频均来自原始 Unity 录屏，完整保留演示时长。",
+      "协同架构与验证边界依据 2026-09-02 证据版技术报告。",
+      "录屏展示已有装箱演示，不作为新增 Agent 全链路实网验证的证明。"
+    ],
+    "coverVariants": [
+      {
+        "src": "media/twin/sequence-poster-640.webp",
+        "width": 640
+      },
+      {
+        "src": "media/twin/sequence-poster-1200.webp",
+        "width": 1200
+      },
+      {
+        "src": "media/twin/sequence-poster-1920.webp",
+        "width": 1920
+      }
+    ],
+    "coverFull": "media/twin/sequence-poster-full.webp"
+  },
+  {
+    "slug": "smart-glasses",
+    "title": "以镜为瞳",
+    "subtitle": "基于多模态交互的视障辅助智能眼镜",
+    "englishTitle": "MULTIMODAL SMART GLASSES",
+    "category": "多模态交互",
+    "summary": "把视觉感知转化为语音反馈，让场景理解、物品寻找与出行辅助融入一副眼镜。",
+    "status": "研究原型",
+    "cover": "media/glasses/prototype-1920.webp",
+    "coverAlt": "演示文稿中的白色智能眼镜硬件原型实拍",
+    "coverPosition": "center 48%",
+    "tags": ["多模态交互", "可穿戴设备", "计算机视觉"],
+    "stack": ["ESP32-S3", "Python", "YOLOE", "Qwen-VL", "WebSocket", "IMU"],
+    "background": "面向视障者日常信息获取和物品寻找的需求，将摄像头、语音与惯性传感器接入端云协同系统，探索更自然的辅助交互。",
+    "features": [
+      {
+        "title": "看见，再听见",
+        "text": "通过图像理解与文字识别获取场景、菜单和文本信息，再以语音给出反馈。"
+      },
+      {
+        "title": "带着记忆寻找",
+        "text": "结合主动搜索、视觉记忆与对话上下文，引导用户寻找生活物品。"
+      },
+      {
+        "title": "感知前方障碍",
+        "text": "利用 YOLOE 检测、目标追踪和 IMU 姿态信息，判断障碍物方位。"
+      },
+      {
+        "title": "连接眼镜与手机",
+        "text": "移动端提供设备监控、远程指令和会话记录，图像与音频通过 WebSocket 传输。"
+      }
+    ],
+    "highlights": [
+      "将视觉、语音与姿态信息组织在同一交互链路中。",
+      "眼镜端采集，服务端分析，移动端提供状态与会话入口。"
+    ],
+    "scope": "素材展示的是研究原型。演示文稿注明盲道导航与红绿灯检测仍在开发，尚未完成实机测试；不将其描述为已验证的出行辅助产品。",
+    "media": [
+      {
+        "id": "glasses-demo",
+        "type": "video",
+        "src": "media/glasses/demo.mp4",
+        "poster": "media/glasses/demo-poster-1280.webp",
+        "title": "硬件原型实机演示",
+        "caption": "演示文稿内嵌视频，展示眼镜原型与交互过程。",
+        "duration": 35,
+        "aspectRatio": "4 / 3",
+        "posterVariants": [
+          {
+            "src": "media/glasses/demo-poster-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/demo-poster-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/demo-poster-1280.webp",
+            "width": 1280
+          }
+        ],
+        "resolution": "1280 × 960"
+      },
+      {
+        "id": "glasses-prototype",
+        "type": "image",
+        "src": "media/glasses/prototype-1920.webp",
+        "title": "眼镜硬件原型",
+        "caption": "项目演示文稿中的实物照片。",
+        "alt": "放在桌面包装盒上的白色智能眼镜原型",
+        "full": "media/glasses/prototype-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/prototype-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/prototype-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/prototype-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 2400,
+        "height": 1080
+      },
+      {
+        "id": "glasses-app",
+        "type": "image",
+        "src": "media/glasses/app-1920.webp",
+        "title": "设备首页与会话",
+        "caption": "真实 APP 首页与会话页。已裁去包含账号、设备标识和连接地址的登录与设置页。",
+        "alt": "智能眼镜 APP 的设备首页和会话界面",
+        "fit": "contain",
+        "full": "media/glasses/app-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/app-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/app-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/app-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 2528,
+        "height": 2780
+      },
+      {
+        "id": "glasses-grasp",
+        "type": "image",
+        "src": "media/glasses/grasp-545.webp",
+        "title": "视觉辅助寻物",
+        "caption": "演示文稿中的手部与目标物体检测画面。",
+        "alt": "手部关键点与目标物体检测的项目截图",
+        "fit": "contain",
+        "full": "media/glasses/grasp-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/grasp-545.webp",
+            "width": 545
+          }
+        ],
+        "width": 545,
+        "height": 546
+      },
+      {
+        "id": "glasses-architecture",
+        "type": "image",
+        "src": "media/glasses/architecture-1232.webp",
+        "title": "端云协同架构",
+        "caption": "眼镜端、服务器、移动端与语音反馈的连接关系。",
+        "alt": "眼镜多模态辅助系统整体框架图",
+        "fit": "contain",
+        "full": "media/glasses/architecture-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/architecture-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/architecture-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/architecture-1232.webp",
+            "width": 1232
+          }
+        ],
+        "width": 1232,
+        "height": 992
+      },
+      {
+        "id": "glasses-services",
+        "type": "image",
+        "src": "media/glasses/services-1383.webp",
+        "title": "生活与出行服务",
+        "caption": "项目演示文稿中的功能分层设计。",
+        "alt": "文字识别、视觉记忆寻物、导航和场景理解服务关系图",
+        "fit": "contain",
+        "full": "media/glasses/services-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/services-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/services-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/services-1383.webp",
+            "width": 1383
+          }
+        ],
+        "width": 1383,
+        "height": 735
+      },
+      {
+        "id": "glasses-prototype-side",
+        "type": "image",
+        "title": "硬件原型侧面",
+        "caption": "演示文稿中的第二张原型照片。",
+        "alt": "硬件原型侧面",
+        "fit": "contain",
+        "src": "media/glasses/prototype-side-1080.webp",
+        "full": "media/glasses/prototype-side-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/prototype-side-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/prototype-side-1080.webp",
+            "width": 1080
+          }
+        ],
+        "width": 1080,
+        "height": 2400
+      },
+      {
+        "id": "glasses-agents",
+        "type": "image",
+        "title": "多智能体服务设计",
+        "caption": "项目资料中的多智能体关系图，作为架构设计展示。",
+        "alt": "多智能体服务设计",
+        "fit": "contain",
+        "src": "media/glasses/agents-772.webp",
+        "full": "media/glasses/agents-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/agents-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/agents-772.webp",
+            "width": 772
+          }
+        ],
+        "width": 772,
+        "height": 594
+      },
+      {
+        "id": "glasses-circuit",
+        "type": "image",
+        "title": "硬件连接关系",
+        "caption": "项目资料中的电路连接设计图。",
+        "alt": "硬件连接关系",
+        "fit": "contain",
+        "src": "media/glasses/circuit-1920.webp",
+        "full": "media/glasses/circuit-full.webp",
+        "variants": [
+          {
+            "src": "media/glasses/circuit-640.webp",
+            "width": 640
+          },
+          {
+            "src": "media/glasses/circuit-1200.webp",
+            "width": 1200
+          },
+          {
+            "src": "media/glasses/circuit-1920.webp",
+            "width": 1920
+          }
+        ],
+        "width": 1920,
+        "height": 1920
+      }
+    ],
+    "code": "MG",
+    "process": [
+      {
+        "title": "眼镜端采集",
+        "text": "摄像头获取画面，IMU 记录姿态；以可穿戴硬件作为输入端。"
+      },
+      {
+        "title": "服务端理解",
+        "text": "视觉检测与多模态理解模块处理画面、文字和寻物请求。"
+      },
+      {
+        "title": "语音与移动端反馈",
+        "text": "语音播报交互结果，移动端提供模式和会话入口。"
+      }
+    ],
+    "evidence": [
+      "硬件照片与 35 秒演示来自项目演示文稿。",
+      "APP 图片只保留不含账号与连接地址的区域。",
+      "生活与出行功能按方案描述，不等同于全部完成实机验收。"
+    ],
+    "coverVariants": [
+      {
+        "src": "media/glasses/prototype-640.webp",
+        "width": 640
+      },
+      {
+        "src": "media/glasses/prototype-1200.webp",
+        "width": 1200
+      },
+      {
+        "src": "media/glasses/prototype-1920.webp",
+        "width": 1920
+      }
+    ],
+    "coverFull": "media/glasses/prototype-full.webp"
+  }
+]

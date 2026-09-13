@@ -1,0 +1,22 @@
+{
+  "name": "fieldnotes-portfolio-v2",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5174 --strictPort",
+    "build": "node scripts/validate-content.mjs && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5174 --strictPort",
+    "start": "node scripts/serve.mjs",
+    "check": "node scripts/validate-content.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.183.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1",
+    "@vitejs/plugin-react": "^5.0.0"
+  }
+}
