@@ -1,338 +1,80 @@
-.opening {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  isolation: isolate;
-  color: #f2f0e8;
-  background: #171713;
-  --opening-mint: #bce7c7;
-  --opening-dim: rgba(242, 240, 232, .52);
-  --opening-line: rgba(242, 240, 232, .18);
-  --opening-duration: 14800ms;
+.ms-opening {
+  position: fixed; inset: 0; z-index: 1000; margin: 0; padding: 0;
+  width: 100%; max-width: none; height: 100%; height: 100dvh; max-height: none;
+  border: 0; overflow: hidden; background: transparent; color: #090a08;
+  font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-synthesis: none; line-height: 1.15; isolation: isolate;
+  transition: opacity 220ms ease, filter 220ms ease;
 }
-.opening::backdrop { background: #171713; }
-.opening .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+.ms-opening::backdrop { background: transparent; }
+.ms-opening.ms-skipping { opacity: 0; filter: blur(3px); }
+.ms-paper, .ms-cinema, .ms-curtain { position: absolute; inset: 0; pointer-events: none; }
+.ms-paper { background: radial-gradient(ellipse at 51% 48%, #e7e7e1, #e3e1dc 76%, #e4dfdb); }
+.ms-cinema { overflow: hidden; }
+.ms-corner { position: absolute; top: 6%; left: 2.5%; line-height: 1; overflow: hidden; }
+.ms-corner > :first-child { font-size: clamp(22px, 2.5vw, 40px); font-weight: 800; letter-spacing: .02em; }
+.ms-corner > :nth-child(2) { font-size: clamp(9px, 1.04vw, 16px); margin: 3px 0; }
+.ms-corner > :last-child { font-size: clamp(14px, 1.65vw, 26px); letter-spacing: .03em; }
+.ms-access { position: absolute; top: 49%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(12px, 1.2vw, 20px); letter-spacing: .1em; white-space: nowrap; }
+.ms-access-rule { display: block; height: 1px; margin-top: 14px; background: currentColor; transform-origin: left; opacity: .3; }
+.ms-logo-stage { position: absolute; left: calc(50% - 15.3vw * var(--move)); top: 50%; width: clamp(210px, 18vw, 296px); transform: translate(-50%, -42%); text-align: center; }
+.ms-mark { width: 100%; height: auto; display: block; overflow: visible; }
+.ms-brand-cn { font-size: clamp(23px, 2vw, 32px); font-weight: 800; letter-spacing: .13em; padding-left: .13em; margin-top: 9px; line-height: 1.15; }
+.ms-brand-en { font-size: clamp(9px, .8vw, 13px); font-weight: 700; letter-spacing: .38em; padding-left: .38em; margin-top: 4px; line-height: 1.3; }
+.ms-lettering { display: inline-flex; white-space: pre; }
+.ms-glyph { display: inline-grid; transform: translateY(var(--lift)); }
+.ms-glyph > span { grid-area: 1 / 1; }
+.ms-glyph-outline { color: transparent; -webkit-text-stroke: .6px #090a08; opacity: var(--outline); clip-path: inset(0 calc(100% - var(--ink)) 0 0); }
+.ms-glyph-ink { clip-path: polygon(0 0, var(--ink) 0, max(0%, calc(var(--ink) - 7%)) 100%, 0 100%); }
+.ms-auth { position: absolute; left: 49%; top: 50%; width: 48%; font-size: clamp(12px, 1.2vw, 22px); letter-spacing: .035em; }
+.ms-auth > div { position: absolute; top: 0; left: 0; transform: translateY(-50%); display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+.ms-auth i { display: inline-block; width: 2px; height: 1.1em; background: currentColor; }
+.ms-scan, .ms-scan-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ms-permission { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: clamp(12px, 1.38vw, 26.5px); white-space: nowrap; }
+.ms-welcome { position: absolute; top: 37%; left: 50%; width: max-content; max-width: calc(100% - 32px); text-align: center; transform: translateX(-50%) scale(var(--welcome-scale)); transform-origin: 50% 25%; }
+.ms-welcome-heading { font-size: clamp(28px, 2.87vw, 55px); font-weight: 800; letter-spacing: -.045em; line-height: 1.12; }
+.ms-welcome-company { position: relative; width: max-content; max-width: 100%; margin: 4px auto 0; font-size: clamp(24px, 2.5vw, 48px); font-weight: 800; line-height: 1.25; }
+.ms-welcome-company > span { display: block; padding: 2px 10px 5px; white-space: nowrap; }
+.ms-welcome-company .ms-highlight { position: absolute; inset: 0; background: #090a08; color: #eeede8; }
+.ms-welcome-brand { width: clamp(120px, 10.6vw, 203px); margin: clamp(23px, 2.3vw, 44px) auto 0; }
+.ms-welcome-brand .ms-brand-cn { font-size: clamp(17px, 1.1vw, 22px); margin-top: 2px; }
+.ms-welcome-brand .ms-brand-en { font-size: clamp(8px, .58vw, 11px); letter-spacing: .24em; }
+.ms-welcome-records { display: block; margin-top: 24px; font-size: clamp(8px, .6vw, 11px); letter-spacing: .15em; }
+.ms-signature { position: absolute; bottom: 3%; right: 2.5%; font-size: clamp(9px, .85vw, 14px); display: flex; align-items: center; gap: 4px; }
+.ms-signature b { font-weight: 800; }
+.ms-signature i { display: inline-block; width: 24px; height: 4px; background: #090a08; margin-left: 9px; }
+.ms-curtain { background: #f2f1ec; }
+.ms-opening .ms-skip { position: absolute; z-index: 3; right: max(24px, env(safe-area-inset-right)); top: max(24px, env(safe-area-inset-top)); display: flex; gap: 13px; align-items: center; min-height: 44px; padding: 9px 13px; color: #292a26; background: transparent; border: 1px solid transparent; font-size: 12px; letter-spacing: .06em; border-radius: 0; cursor: pointer; transition: background 160ms, border-color 160ms; }
+.ms-opening .ms-skip:hover { background: #090a080b; border-color: #090a0840; }
+.ms-opening .ms-skip:focus-visible { outline: 2px solid #090a08; outline-offset: 3px; }
+.ms-skip kbd { font: 10px Arial, sans-serif; border: 1px solid #090a0840; padding: 3px 4px; }
+.ms-mark-fallback { display: block; text-align: center; font-weight: 800; }
+@media (max-width: 650px) {
+  .ms-corner { left: 20px; top: 28px; }
+  .ms-corner > :first-child { font-size: 24px; }
+  .ms-corner > :nth-child(2) { font-size: 8px; }
+  .ms-corner > :last-child { font-size: 13px; }
+  .ms-opening .ms-skip { right: 13px; top: 24px; gap: 7px; padding: 7px; font-size: 11px; }
+  .ms-skip kbd { display: none; }
+  .ms-logo-stage { width: min(54vw, 240px); left: 50%; top: calc(47% - 6% * var(--move)); }
+  .ms-auth { left: 0; width: 100%; top: 64%; font-size: 12px; }
+  .ms-auth > div { left: 50%; transform: translate(-50%, -50%); }
+  .ms-access { font-size: 10px; letter-spacing: .045em; }
+  .ms-welcome { top: 35%; }
+  .ms-welcome-heading { font-size: 32px; }
+  .ms-welcome-company { font-size: 27px; }
+  .ms-welcome-brand { width: 155px; margin-top: 29px; }
+  .ms-welcome-records { font-size: 7px; }
+  .ms-signature { right: 20px; bottom: max(24px, env(safe-area-inset-bottom)); }
 }
-.opening-shutter {
-  position: absolute;
-  inset-block: 0;
-  width: calc(50% + 1px);
-  z-index: 10;
-  background: #f2f0e8;
-  pointer-events: none;
-  transform: translateX(var(--shutter-direction));
-  animation: opening-shutter var(--opening-duration) cubic-bezier(.76, 0, .24, 1) both;
+@media (max-height: 500px) {
+  .ms-logo-stage { width: 150px; }
+  .ms-brand-cn { font-size: 18px; margin-top: 1px; }
+  .ms-brand-en { font-size: 8px; }
+  .ms-welcome { top: 25%; }
+  .ms-welcome-heading { font-size: 26px; }
+  .ms-welcome-company { font-size: 23px; }
+  .ms-welcome-brand { width: 105px; margin-top: 15px; }
+  .ms-welcome-records { margin-top: 12px; }
 }
-.opening-shutter-left { left: 0; --shutter-direction: -101%; }
-.opening-shutter-right { right: 0; --shutter-direction: 101%; }
-.opening-topline,
-.opening-bottomline {
-  position: absolute;
-  z-index: 20;
-  inset-inline: clamp(22px, 4vw, 64px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  font-family: var(--sans, Arial, sans-serif);
-}
-.opening-topline {
-  top: max(18px, env(safe-area-inset-top));
-  opacity: 0;
-  animation: opening-chrome var(--opening-duration) ease both;
-}
-.opening-label {
-  font-size: .74rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-}
-.opening-label > span {
-  margin-left: 12px;
-  color: var(--opening-dim);
-  font-weight: 400;
-}
-.opening-skip {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0 10px 12px;
-  border: 0;
-  color: inherit;
-  background: transparent;
-  font: 600 .7rem var(--sans, Arial, sans-serif);
-  letter-spacing: .12em;
-  cursor: pointer;
-}
-.opening-skip > span {
-  font-size: 1.35rem;
-  font-weight: 400;
-  transition: transform .22s ease;
-}
-.opening-skip:hover { color: var(--opening-mint); }
-.opening-skip:hover > span { transform: translate(3px, -3px); }
-.opening-skip:focus-visible {
-  outline: 1px solid var(--opening-mint);
-  outline-offset: 4px;
-}
-.opening-skip kbd {
-  padding: 4px 6px;
-  border: 1px solid var(--opening-line);
-  color: var(--opening-dim);
-  font: .65rem var(--sans, Arial, sans-serif);
-  letter-spacing: .08em;
-}
-.opening-bottomline {
-  bottom: max(24px, env(safe-area-inset-bottom));
-  color: var(--opening-dim);
-  font: .68rem var(--sans, Arial, sans-serif);
-  letter-spacing: .12em;
-  opacity: 0;
-  animation: opening-chrome var(--opening-duration) ease both;
-}
-.opening-bottomline p { line-height: 1.5; }
-.opening-bottomline span { color: #f2f0e8; font-size: .86rem; }
-.opening-bottomline i { padding-inline: 10px; color: var(--opening-line); font-style: normal; }
-.rhinelab-boot {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #171713;
-}
-.boot-grid {
-  position: absolute;
-  inset: 0;
-  opacity: .32;
-  background-image:
-    linear-gradient(rgba(242, 240, 232, .035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(242, 240, 232, .035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(circle at center, black, transparent 75%);
-}
-.boot-cross {
-  position: absolute;
-  z-index: 1;
-  background: var(--opening-line);
-  opacity: 0;
-  animation: boot-cross-in var(--opening-duration) ease both;
-}
-.boot-cross-x { top: 50%; left: 0; width: 100%; height: 1px; }
-.boot-cross-y { top: 0; left: 50%; width: 1px; height: 100%; }
-.boot-coordinate {
-  position: absolute;
-  z-index: 2;
-  margin: 0;
-  color: var(--opening-dim);
-  font: .62rem var(--sans, Arial, sans-serif);
-  letter-spacing: .18em;
-  opacity: 0;
-  animation: opening-chrome var(--opening-duration) ease both;
-}
-.boot-coordinate-top { top: 23%; left: clamp(22px, 11vw, 170px); }
-.boot-coordinate-bottom { right: clamp(22px, 11vw, 170px); bottom: 23%; }
-.boot-access,
-.boot-logo-stage,
-.boot-auth,
-.boot-scan,
-.boot-welcome {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-.boot-access {
-  align-content: center;
-  gap: 11px;
-  color: var(--opening-dim);
-  font: .68rem var(--sans, Arial, sans-serif);
-  letter-spacing: .22em;
-  animation: boot-access var(--opening-duration) ease both;
-}
-.boot-access-line { color: #f2f0e8; }
-.boot-access-rule { width: min(180px, 35vw); height: 1px; background: var(--opening-line); }
-.boot-access-subline { font-size: .58rem; letter-spacing: .16em; }
-.boot-access-subline i { color: var(--opening-mint); font-style: normal; }
-.boot-logo-stage {
-  align-content: center;
-  gap: 16px;
-  animation: boot-logo-stage var(--opening-duration) ease both;
-}
-.boot-logo {
-  width: min(310px, 43vw, 39vh);
-  overflow: visible;
-  color: #f2f0e8;
-}
-.boot-logo-contour {
-  stroke-dasharray: 1040;
-  stroke-dashoffset: 1040;
-  animation: boot-logo-draw var(--opening-duration) cubic-bezier(.4, 0, .18, 1) both;
-}
-.boot-logo-symbol {
-  stroke-dasharray: 130;
-  stroke-dashoffset: 130;
-  animation: boot-logo-symbol var(--opening-duration) ease both;
-}
-.boot-logo-wordmark {
-  fill: currentColor;
-  font: 700 16px var(--sans, Arial, sans-serif);
-  letter-spacing: 8px;
-  opacity: 0;
-  animation: boot-wordmark var(--opening-duration) ease both;
-}
-.boot-logo-caption {
-  color: var(--opening-dim);
-  font: .58rem var(--sans, Arial, sans-serif);
-  letter-spacing: .27em;
-  opacity: 0;
-  animation: boot-wordmark var(--opening-duration) ease both;
-}
-.boot-auth {
-  align-content: center;
-  gap: 9px;
-  color: var(--opening-dim);
-  font: .65rem var(--sans, Arial, sans-serif);
-  letter-spacing: .18em;
-  animation: boot-auth var(--opening-duration) ease both;
-}
-.boot-auth p { margin: 0; }
-.boot-auth-heading { color: #f2f0e8; }
-.boot-auth-heading span { color: var(--opening-mint); }
-.boot-auth-heading strong { color: var(--opening-mint); font-weight: 600; }
-.boot-blink { color: var(--opening-mint); animation: boot-blink 1s steps(2, end) infinite; }
-.boot-progress { width: min(240px, 42vw); height: 2px; margin-top: 12px; background: var(--opening-line); overflow: hidden; }
-.boot-progress span { display: block; width: 100%; height: 100%; background: var(--opening-mint); transform-origin: left; transform: scaleX(0); animation: boot-progress var(--opening-duration) linear both; }
-.boot-scan { opacity: 0; animation: boot-scan var(--opening-duration) ease both; }
-.boot-scan-art { width: min(650px, 70vw, 72vh); height: auto; overflow: visible; }
-.boot-ring { stroke: rgba(242, 240, 232, .23); stroke-width: 1; }
-.boot-ring-white { stroke: rgba(242, 240, 232, .55); stroke-dasharray: 2 12; }
-.boot-ring-inner { stroke: rgba(188, 231, 199, .5); stroke-dasharray: 1 8; }
-.boot-scan-arc { stroke: var(--opening-mint); stroke-width: 2; stroke-dasharray: 300 800; transform-origin: 360px 360px; animation: boot-orbit 6s linear infinite; }
-.boot-scan-arc-second { animation-direction: reverse; animation-duration: 8s; opacity: .6; }
-.boot-dot { fill: var(--opening-mint); filter: drop-shadow(0 0 7px rgba(188, 231, 199, .9)); }
-.boot-dot-second { animation: boot-blink 1.4s ease-in-out infinite; }
-.boot-scan-sweep { stroke: var(--opening-mint); stroke-width: 1; opacity: .65; transform-origin: 360px 360px; animation: boot-orbit 4s linear infinite; }
-.boot-scan-label,
-.boot-scan-status {
-  position: absolute;
-  color: var(--opening-dim);
-  font: .6rem var(--sans, Arial, sans-serif);
-  letter-spacing: .19em;
-}
-.boot-scan-label { top: calc(50% + min(32vw, 33vh)); }
-.boot-scan-status { bottom: calc(50% - min(39vw, 39vh)); color: var(--opening-mint); }
-.boot-welcome {
-  align-content: center;
-  justify-items: center;
-  gap: 8px;
-  animation: boot-welcome var(--opening-duration) ease both;
-}
-.boot-welcome-kicker,
-.boot-welcome-database {
-  color: var(--opening-mint);
-  font: .64rem var(--sans, Arial, sans-serif);
-  letter-spacing: .2em;
-}
-.boot-welcome strong {
-  margin-top: 12px;
-  color: #f2f0e8;
-  font: 300 clamp(2rem, 5vw, 5.4rem) var(--sans, Arial, sans-serif);
-  letter-spacing: .18em;
-}
-.boot-welcome-company {
-  color: #f2f0e8;
-  font: 600 clamp(1rem, 2vw, 1.6rem) var(--sans, Arial, sans-serif);
-  letter-spacing: .3em;
-}
-.boot-welcome-company-small { color: var(--opening-dim); font-size: .72rem; font-weight: 400; }
-.boot-welcome-line { width: min(160px, 28vw); height: 1px; margin: 18px 0 5px; background: var(--opening-line); }
-@keyframes boot-access {
-  0%, 5% { opacity: 0; transform: translateY(8px); }
-  10%, 22% { opacity: 1; transform: none; }
-  27%, 100% { opacity: 0; transform: translateY(-8px); }
-}
-@keyframes boot-logo-stage {
-  0%, 17% { opacity: 0; transform: scale(.94); }
-  22%, 35% { opacity: 1; transform: none; }
-  41%, 100% { opacity: 0; transform: scale(1.04); }
-}
-@keyframes boot-auth {
-  0%, 30% { opacity: 0; transform: translateY(8px); }
-  35%, 58% { opacity: 1; transform: none; }
-  64%, 100% { opacity: 0; transform: translateY(-8px); }
-}
-@keyframes boot-scan {
-  0%, 56% { opacity: 0; transform: scale(.84); }
-  62%, 77% { opacity: 1; transform: scale(1); }
-  82%, 100% { opacity: 0; transform: scale(1.08); }
-}
-@keyframes boot-welcome {
-  0%, 75% { opacity: 0; transform: translateY(15px); }
-  80%, 91% { opacity: 1; transform: none; }
-  97%, 100% { opacity: 0; transform: translateY(-10px); }
-}
-@keyframes boot-logo-draw {
-  0%, 18% { stroke-dashoffset: 1040; }
-  30%, 100% { stroke-dashoffset: 0; }
-}
-@keyframes boot-logo-symbol {
-  0%, 24% { stroke-dashoffset: 130; }
-  34%, 100% { stroke-dashoffset: 0; }
-}
-@keyframes boot-wordmark {
-  0%, 28% { opacity: 0; transform: translateY(5px); }
-  37%, 100% { opacity: 1; transform: none; }
-}
-@keyframes boot-progress { 0%, 32% { transform: scaleX(0); } 60%, 100% { transform: scaleX(1); } }
-@keyframes boot-orbit { to { transform: rotate(360deg); } }
-@keyframes boot-blink { 50% { opacity: .15; } }
-@keyframes boot-cross-in { 0%, 9% { opacity: 0; } 18%, 80% { opacity: 1; } 93%, 100% { opacity: 0; } }
-@keyframes opening-chrome { 0%, 4% { opacity: 0; } 12%, 82% { opacity: 1; } 94%, 100% { opacity: 0; } }
-@keyframes opening-shutter { 0%, 90% { transform: translateX(var(--shutter-direction)); } 100% { transform: translateX(0); } }
-@media (prefers-reduced-motion: reduce) {
-  .opening * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
-}
-@media (max-width: 600px) {
-  .opening-label > span { display: none; }
-  .opening-bottomline { align-items: flex-end; font-size: .58rem; }
-  .opening-bottomline > p:first-child { max-width: 10em; }
-  .opening-bottomline i { padding-inline: 5px; }
-  .opening-skip kbd { display: none; }
-  .boot-coordinate { display: none; }
-  .boot-logo { width: min(280px, 67vw, 39vh); }
-  .boot-scan-art { width: min(560px, 104vw, 72vh); }
-  .boot-welcome strong { font-size: clamp(1.7rem, 8vw, 3.3rem); letter-spacing: .1em; }
-  .boot-welcome-company { font-size: .8rem; letter-spacing: .2em; }
-  .boot-scan-label { top: calc(50% + min(45vw, 33vh)); }
-  .boot-scan-status { bottom: calc(50% - min(50vw, 39vh)); }
-}
-@media (max-height: 580px) and (min-width: 601px) {
-  .boot-logo { width: min(250px, 30vw, 55vh); }
-  .boot-scan-art { width: min(470px, 50vw, 78vh); }
-  .boot-scan-label { top: calc(50% + min(25vw, 34vh)); }
-  .boot-scan-status { bottom: calc(50% - min(31vw, 38vh)); }
-}
-.opening[data-still="true"] *,
-.opening[data-still="true"] *::before,
-.opening[data-still="true"] *::after { animation: none !important; }
-.opening[data-still="true"] .boot-logo-contour { stroke-dashoffset: 0; }
-.opening[data-still="true"] .boot-logo-symbol { stroke-dashoffset: 0; }
-.opening[data-still="true"] .boot-logo-wordmark,
-.opening[data-still="true"] .boot-logo-caption,
-.opening[data-still="true"] .boot-welcome,
-.opening[data-still="true"] .boot-scan { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .ms-opening { transition: none; } }

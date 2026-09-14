@@ -41,7 +41,9 @@ npm start
 | `src/components/` | 阵列入口、弹窗、搜索和媒体交互 |
 | `src/pages/` | 详情、媒体库、关于页面 |
 | `src/lib/archive-engine.js` | 原创 Three.js 几何、交互与镜头 |
-| `src/vendor/rhinelab/` | 保留 MIT 许可的运动数学辅助函数 |
+| `src/vendor/rhinelab/` | 保留 MIT 许可的运动数学辅助函数、原版开场轨迹 |
+
+开场实现与维护说明见 [docs/OPENING.md](docs/OPENING.md)：原版阶段与轨迹、镜界 MirrorSphere 原稿遮罩、欢迎页品牌替换、跳过与重播。正文项目与媒体配置不受开场改动影响。
 | `src/styles.css`、`interface.css`、`responsive.css` | 基础、组件与响应式样式 |
 | `scripts/validate-content.mjs` | 构建前项目与全部媒体引用检查 |
 | `docs/ADDING-PROJECTS.md` | 新增项目的数据字段及规则 |

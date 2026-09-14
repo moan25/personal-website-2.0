@@ -1,5 +1,9 @@
 # 素材来源与事实边界
 
+## 开场品牌
+
+当前使用用户自有的 `品牌设计/MirrorSphere_icon_cobalt-cyan_v3.png`，站内仅一份 `public/brand/mirrorsphere-v3.png`，原稿不修改。品牌中英文取自用户提供的设计页“镜界 / MirrorSphere”。逐笔效果为原 PNG 的 SVG 遮罩，单色为运行时 CSS；没有生成或近似重画品牌。原版轨迹、MIT 许可、视频无法读取等边界详见 OPENING.md。
+
 ## 来源目录
 
 - 智能眼镜：C:/Users/moan/Desktop/项目/以镜为瞳——基于多模态交互的视障辅助智能眼镜/

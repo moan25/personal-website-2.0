@@ -1,167 +1,118 @@
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { OPENING_DURATION, openingFrame } from "../lib/opening-timeline.js";
+import DrawText from "./opening/DrawText.jsx";
+import MirrorSphereMark from "./opening/MirrorSphereMark.jsx";
+import ScanField from "./opening/ScanField.jsx";
 import "../opening.css";
 
-export const OPENING_SESSION_KEY = "rhinelab-opening-v1";
-
+// Versioned so visitors who saw the superseded opener see this replacement.
+export const OPENING_SESSION_KEY = "mirrorsphere-opening-v2";
 export function shouldPlayOpening(reduced) {
   if (reduced || (location.hash && location.hash !== "#/")) return false;
-  try {
-    return sessionStorage.getItem(OPENING_SESSION_KEY) !== "seen";
-  } catch {
-    return true;
-  }
+  try { return sessionStorage.getItem(OPENING_SESSION_KEY) !== "seen"; }
+  catch { return true; }
 }
 
-// Same access → logo → auth → scan → welcome rhythm as RhineLabUI, shortened
-// for a portfolio entry while keeping the original visual language intact.
-const DURATION = 14800;
-
-export default function OpeningSequence({ projects, reduced, onReveal, onFinish }) {
-  const dialog = useRef(null);
-  const skip = useRef(null);
-  const callbacks = useRef({ onReveal, onFinish });
-  const completed = useRef(false);
+export default function OpeningSequence({ reduced, onReveal, onFinish }) {
+  const dialog = useRef(null), skip = useRef(null), callbacks = useRef({ onReveal, onFinish });
+  const completed = useRef(false), closing = useRef(false), exitTimer = useRef(null);
+  const [elapsed, setElapsed] = useState(0), [skipping, setSkipping] = useState(false);
   const titleId = useId();
   callbacks.current = { onReveal, onFinish };
+  const s = openingFrame(elapsed, reduced);
 
   function finish() {
     if (completed.current) return;
     completed.current = true;
     callbacks.current.onFinish();
   }
+  function requestExit() {
+    if (closing.current || completed.current) return;
+    closing.current = true;
+    callbacks.current.onReveal();
+    if (reduced) { finish(); return; }
+    setSkipping(true);
+    exitTimer.current = setTimeout(finish, 220);
+  }
 
   useEffect(() => {
-    const node = dialog.current;
-    const previous = document.activeElement;
+    const node = dialog.current, previous = document.activeElement;
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     completed.current = false;
+    closing.current = false;
+    setSkipping(false);
     node.showModal();
     skip.current?.focus({ preventScroll: true });
-    try {
-      sessionStorage.setItem(OPENING_SESSION_KEY, "seen");
-    } catch {
-      // Storage restrictions must never block the archive.
-    }
-    const cancel = (event) => {
-      event.preventDefault();
-      finish();
-    };
+    try { sessionStorage.setItem(OPENING_SESSION_KEY, "seen"); } catch { /* optional storage */ }
+    const cancel = (event) => { event.preventDefault(); requestExit(); };
     node.addEventListener("cancel", cancel);
-    const reveal = setTimeout(
-      () => callbacks.current.onReveal(),
-      reduced ? 0 : DURATION * 0.69,
-    );
-    const end = reduced ? null : setTimeout(finish, DURATION);
+    // The mounted app prewarms its archive scene underneath the sequence.
+    // The sequence never waits for media downloads or an external service.
+    callbacks.current.onReveal();
+    let raf, deadline;
+    const start = performance.now();
+    const tick = (now) => {
+      const time = Math.min(now - start, OPENING_DURATION);
+      setElapsed(time);
+      if (time >= OPENING_DURATION) finish();
+      else raf = requestAnimationFrame(tick);
+    };
+    if (!reduced) {
+      raf = requestAnimationFrame(tick);
+      // Independent fail-safe also releases the modal if rendering is paused.
+      deadline = setTimeout(finish, OPENING_DURATION + 150);
+    }
     return () => {
-      clearTimeout(reveal);
-      clearTimeout(end);
+      cancelAnimationFrame(raf);
+      clearTimeout(deadline);
+      clearTimeout(exitTimer.current);
       node.removeEventListener("cancel", cancel);
       if (node.open) node.close();
       document.body.style.overflow = overflow;
-      const target = previous?.isConnected && previous !== document.body
-        ? previous
-        : document.getElementById("main-content");
+      const target = previous?.isConnected && previous !== document.body ? previous : document.getElementById("main-content");
       target?.focus({ preventScroll: true });
     };
   }, [reduced]);
 
-  const mediaCount = projects.reduce((sum, project) => sum + project.media.length, 0);
-  return (
-    <dialog
-      ref={dialog}
-      className="opening"
-      data-still={reduced ? "true" : undefined}
-      aria-labelledby={titleId}
-      style={{ "--opening-duration": `${DURATION}ms` }}
-      onKeyDown={(event) => {
-        if (event.key === "Tab") {
-          event.preventDefault();
-          skip.current?.focus({ preventScroll: true });
-        }
-        if (event.key === "Enter" || event.key === "Escape") {
-          event.preventDefault();
-          event.stopPropagation();
-          finish();
-        }
-      }}
-    >
-      <h2 id={titleId} className="sr-only">Rhine Lab interface boot sequence</h2>
-      <div className="opening-shutter opening-shutter-left" aria-hidden="true" />
-      <div className="opening-shutter opening-shutter-right" aria-hidden="true" />
-
-      <div className="opening-topline">
-        <span className="opening-label">RHINE·LAB <span>/ INTERNAL DATABASE</span></span>
-        <button ref={skip} className="opening-skip" onClick={finish}>
-          {reduced ? "ENTER ARCHIVE" : "SKIP INTRO"} <span aria-hidden="true">↗</span>
-          <kbd aria-hidden="true">ESC</kbd>
-        </button>
+  return <dialog ref={dialog} className={`opening ms-opening${skipping ? " ms-skipping" : ""}`} data-phase={s.phase} data-still={reduced || undefined} aria-labelledby={titleId}
+    onKeyDown={(event) => {
+      if (event.key === "Tab") { event.preventDefault(); skip.current?.focus({ preventScroll: true }); }
+      if (event.key === "Enter" || event.key === "Escape") { event.preventDefault(); event.stopPropagation(); requestExit(); }
+    }}>
+    <h2 id={titleId} className="sr-only">镜界 MirrorSphere · 墨安项目档案开场</h2>
+    <p className="sr-only">启动文字为视觉叙事，不会请求设备权限或验证访客身份。可随时跳过。</p>
+    <div className="ms-paper" style={{ opacity: 1 - s.open }} aria-hidden="true" />
+    <div className="ms-cinema" style={{ opacity: 1 - s.open }} aria-hidden="true">
+      <div className="ms-corner">
+        {["墨安", "SELECTED PROJECTS", "个人项目档案"].map((text, i) => <div key={text} style={{ opacity: s.corner[i].opacity, transform: `translateX(${s.corner[i].x * 0.4}px)` }}>{text}</div>)}
       </div>
-
-      <div className="rhinelab-boot" aria-hidden="true">
-        <div className="boot-grid" />
-        <span className="boot-cross boot-cross-x" />
-        <span className="boot-cross boot-cross-y" />
-        <p className="boot-coordinate boot-coordinate-top">SYSTEM / 00.01.02</p>
-        <p className="boot-coordinate boot-coordinate-bottom">SYNCING ARCHIVE FIELD</p>
-
-        <div className="boot-access">
-          <span className="boot-access-line">ACCESS PERMISSION REQUIRED</span>
-          <span className="boot-access-rule" />
-          <span className="boot-access-subline">REQUEST RECEIVED <i>· · ·</i></span>
-        </div>
-
-        <div className="boot-logo-stage">
-          <svg className="boot-logo" viewBox="0 0 310 185" fill="none">
-            <path
-              className="boot-logo-contour"
-              d="M295 73C295 41 273 15 240 15C221 15 207 23 192 38C186 43 181 47 176 52C127 96 103 128 70 128C38 128 15 101 15 70C15 39 37 15 70 15C103 15 127 48 156 75C182 99 208 128 240 128C273 128 295 105 295 73Z"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            />
-            <path className="boot-logo-symbol boot-logo-plus" d="M44 70h50M69 45v50" stroke="currentColor" strokeWidth="2" />
-            <path className="boot-logo-symbol boot-logo-minus" d="M219 70h44" stroke="currentColor" strokeWidth="2" />
-            <text x="155" y="174" textAnchor="middle" className="boot-logo-wordmark">RHINE·LAB</text>
-          </svg>
-          <span className="boot-logo-caption">SYNTHESIZE INFORMATION</span>
-        </div>
-
-        <div className="boot-auth">
-          <p className="boot-auth-heading">ID CONFIRMED <span>:</span> <strong>JOYCE MOORE</strong></p>
-          <p>REQUEST RECEIVED <span className="boot-blink">· · ·</span></p>
-          <p>START PROCESSING...</p>
-          <div className="boot-progress"><span /></div>
-        </div>
-
-        <div className="boot-scan">
-          <svg viewBox="0 0 720 720" className="boot-scan-art" fill="none">
-            <circle className="boot-ring boot-ring-outer" cx="360" cy="360" r="318" />
-            <circle className="boot-ring boot-ring-white" cx="360" cy="360" r="250" />
-            <circle className="boot-ring boot-ring-inner" cx="360" cy="360" r="168" />
-            <path className="boot-scan-arc" d="M360 75a285 285 0 0 1 250 147" />
-            <path className="boot-scan-arc boot-scan-arc-second" d="M110 498a285 285 0 0 1 0-276" />
-            <circle className="boot-dot" cx="360" cy="42" r="7" />
-            <circle className="boot-dot boot-dot-second" cx="642" cy="360" r="7" />
-            <path className="boot-scan-sweep" d="M360 360L360 36" />
-          </svg>
-          <span className="boot-scan-label">SCANNING PROJECT FIELD</span>
-          <span className="boot-scan-status">{String(projects.length).padStart(2, "0")} PROJECTS / {String(mediaCount).padStart(2, "0")} RECORDS</span>
-        </div>
-
-        <div className="boot-welcome">
-          <span className="boot-welcome-kicker">PERMISSION AUTHORIZED</span>
-          <strong>WELCOME TO</strong>
-          <span className="boot-welcome-company">INTERNAL DATABASE</span>
-          <span className="boot-welcome-company boot-welcome-company-small">RHINE LAB.LLC.</span>
-          <span className="boot-welcome-line" />
-          <span className="boot-welcome-database">SELECTED PROJECT ARCHIVE</span>
-        </div>
+      <div className="ms-access" style={{ opacity: s.access }}><DrawText text="ACCESS PERMISSION REQUIRED" progress={s.accessDraw} /><span className="ms-access-rule" style={{ transform: `scaleX(${s.accessDraw})` }} /></div>
+      <div className="ms-logo-stage" style={{ opacity: s.logoOpacity, "--move": s.logoMove }}>
+        <MirrorSphereMark progress={s.logoDraw} />
+        <div className="ms-brand-cn"><DrawText text="镜界" progress={s.wordmark} /></div>
+        <div className="ms-brand-en"><DrawText text="MirrorSphere" progress={s.wordmark} /></div>
       </div>
-
-      <div className="opening-bottomline">
-        <p>PROJECT ARCHIVE · EST. 2026</p>
-        <p><span>{String(projects.length).padStart(2, "0")}</span> PROJECTS <i>/</i> <span>{String(mediaCount).padStart(2, "0")}</span> RECORDS</p>
+      <div className="ms-auth">{s.auth.map((line) => <div key={line.text} style={{ opacity: line.opacity }}><DrawText text={line.text} progress={line.draw} /><i /></div>)}</div>
+      <div className="ms-scan" style={{ opacity: s.scan }}>
+        {s.scan > 0 && <ScanField frame={s.frame} />}
+        <span className="ms-permission" style={{ opacity: s.permission, letterSpacing: `${s.scanTracking * 0.55}px` }}>ARCHIVE READY</span>
       </div>
-    </dialog>
-  );
+      <div className="ms-welcome" style={{ opacity: s.welcome, "--welcome-scale": s.welcomeScale, filter: `blur(${s.welcomeBlur}px)` }}>
+        <div className="ms-welcome-heading"><DrawText text="WELCOME TO" progress={s.welcomeDraw} /></div>
+        <div className="ms-welcome-company" style={{ opacity: s.company }}>
+          <span>墨安 · 项目档案</span>
+          <span className="ms-highlight" style={{ clipPath: `inset(0 ${100 * (1 - s.highlight)}% 0 0)` }}>墨安 · 项目档案</span>
+        </div>
+        <div className="ms-welcome-brand" style={{ opacity: s.welcomeLogo, transform: `translateY(${(1 - s.welcomeLogo) * 8}px)` }}>
+          <MirrorSphereMark />
+          <div className="ms-brand-cn">镜界</div><div className="ms-brand-en">MirrorSphere</div>
+        </div>
+        <span className="ms-welcome-records" style={{ opacity: s.database }}>SELECTED PROJECTS / INTERACTIVE WORKS</span>
+      </div>
+      <div className="ms-signature" style={{ opacity: s.signature }}>CURATED BY <b>MOAN</b><i /></div>
+    </div>
+    <div className="ms-curtain" aria-hidden="true" style={{ opacity: s.curtain, clipPath: `inset(0 ${s.open * 50}% 0 ${s.open * 50}%)` }} />
+    <button ref={skip} className="ms-skip" onClick={requestExit}>{reduced ? "进入档案" : "跳过开场"}<span aria-hidden="true">↗</span><kbd aria-hidden="true">ESC</kbd></button>
+  </dialog>;
 }
