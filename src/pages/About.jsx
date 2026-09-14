@@ -29,12 +29,6 @@ export default function About({ projects }) {
         </section>
         <aside>
           <section>
-            <h2>展示边界</h2>
-            <p>
-              企业实习项目未收录。现有资料涉及业务数据、日志与访问配置，且缺少明确的公开展示授权。不以模拟内容冒充企业项目成果。
-            </p>
-          </section>
-          <section>
             <h2>素材说明</h2>
             <p>
               项目影像来自原始录屏、演示文稿与项目资料。APP
