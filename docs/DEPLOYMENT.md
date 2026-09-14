@@ -6,7 +6,7 @@
 
 登录选定静态托管平台，把 `dist/` 内容上传为站点根目录。必须让 `index.html` 位于发布根，不要上传包含“个人网站 1.0”的父目录。若使用交付的 `personal-website-2.0-static.zip`，先解压，再上传解压后的目录。
 
-该操作需要你已有托管账号的登录与发布授权；没有自动创建公开 GitHub 仓库、没有绑定域名，也没有启用付费服务。
+当前版本已通过 GitHub Pages 工作流发布为公共 HTTPS 网页：[https://moan25.github.io/personal-website-2.0/](https://moan25.github.io/personal-website-2.0/)。后续修改推送到 `main` 后会自动重新构建。没有绑定自定义域名，也没有启用付费服务。
 
 ## 平台配置
 
@@ -15,7 +15,7 @@
 | Cloudflare Pages | Direct Upload 上传 `dist/`，或 Git 集成设置构建命令 `npm run build`、输出 `dist` |
 | Netlify | 手动发布上传 `dist/`；Git 集成可直接读取根目录 `netlify.toml` |
 | Vercel | 导入已授权的代码仓库，框架 Vite，命令 `npm run build`，输出 `dist` |
-| GitHub Pages | 启用 Pages 的 GitHub Actions，使用项目提供的工作流；需先由你创建或授权自己的仓库 |
+| GitHub Pages | 已启用 Pages 的 GitHub Actions；推送 `main` 后自动构建并发布 |
 
 访问者不需要运行 npm 或安装 Node.js。媒体使用静态地址，托管方应正确返回 MP4 MIME 与 Range 响应。所有单文件小于 25 MiB，但选择平台前仍应核对账号流量、存储和地区可达性；不要为了免费域名选择而公开企业资料。
 
