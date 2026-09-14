@@ -40,4 +40,4 @@
 - `src/App.jsx`：首次播放条件、重播入口和三维场景预热。
 - `src/vendor/rhinelab/LICENSE`：参考代码许可文本。
 
-`public/brand/mirrorsphere-v3.png` 与 `src/components/MirrorSphereMark.jsx` 为上一轮方案遗留文件，当前开场没有引用，也不会显示该图标。后续清理时可以一并删除，不影响当前实现。
+上一轮 MirrorSphere 开场的组件和网站内副本已从 2.0 删除，当前构建不包含该图标。
